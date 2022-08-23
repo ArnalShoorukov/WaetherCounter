@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
+import 'package:weather_counter/main.dart';
 
 import '../helpers/weather_command.dart';
 import '../managers/weather_manager.dart';
@@ -23,23 +25,34 @@ class _MyHomePageState extends State<MyHomePage> {
   void _incrementCounter() {
     print('Increment $_counter');
     _counter < 10
-        ? setState(() {
-      visibilityAdd = true;
-      _counter++;
-      visibilityRemove = true;
-    })
+        ? darkTheme == true
+            ? setState(() {
+                visibilityAdd = true;
+                _counter = _counter + 2;
+                visibilityRemove = true;
+              })
+            : setState(() {
+                visibilityAdd = true;
+                _counter++;
+                visibilityRemove = true;
+              })
         : setState(() {
-      visibilityAdd = false;
-    });
+            visibilityAdd = false;
+          });
   }
 
   void _decrementCounter() {
     print('Decrement $_counter');
     if (_counter > 0) {
-      setState(() {
-        _counter--;
-        visibilityAdd = true;
-      });
+      darkTheme == true
+          ? setState(() {
+              _counter = _counter - 2;
+              visibilityAdd = true;
+            })
+          : setState(() {
+              _counter--;
+              visibilityAdd = true;
+            });
     } else {
       setState(() {
         visibilityRemove = false;
@@ -62,9 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
               StreamBuilder<Weathers>(
                 stream: sl<WeatherManagers>().weather$,
                 builder: (
-                    BuildContext context,
-                    AsyncSnapshot<Weathers> snapshot,
-                    ) {
+                  BuildContext context,
+                  AsyncSnapshot<Weathers> snapshot,
+                ) {
                   if (snapshot.hasError) {
                     return Text(
                       'Error: ${snapshot.error}',
@@ -114,11 +127,28 @@ class _MyHomePageState extends State<MyHomePage> {
                   SizedBox(height: 12),
                   FloatingActionButton(
                     onPressed: () => {
+                      darkTheme == false
+                          ? {
+                              MyApp.of(context).changeTheme(ThemeMode.dark),
+                              setState(() {
+                                darkTheme = true;
+                              })
+                            }
+                          : {
+                              MyApp.of(context).changeTheme(ThemeMode.light),
+                              setState(() {
+                                darkTheme = false;
+                              })
+                            }
+                    },
+                    // child: Text('Light'),
+
+                    /*onPressed: () => {
                       setState(() {
                         print('Mode');
                         ThemeMode.dark;
                       })
-                    },
+                    },*/
                     tooltip: 'Decrement',
                     child: const Icon(Icons.color_lens),
                   ),
