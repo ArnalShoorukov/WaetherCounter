@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Helpers {
   static const authority = 'api.openweathermap.org';
   static const path = '/data/2.5/weather';
-  static const apiKey = '9df005a74159fe49544a032c4d0f1fa0';
+  static const apiKey = 'apiKey';
 
 }
 const txtHomeTitleStyle = TextStyle(
